@@ -1,0 +1,30 @@
+<VirtualHost *:8080>
+	ServerAdmin ad.dycost@gmail.com
+	DocumentRoot /mnt/users/Ad/django-projects/archive
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /mnt/users/Ad/django-projects/archive/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	# Логи
+	ErrorLog	/mnt/users/Ad/django-projects/archive/logs/error.log
+	CustomLog   /mnt/users/Ad/django-projects/archive/logs/access.log common
+
+	# wsgi-обработчик
+	WSGIScriptAlias / /mnt/users/Ad/django-projects/archive/deploy/wsgi.py
+	# Параметры запуска wsgi
+	WSGIDaemonProcess dw-site user=ad group=ad home=/mnt/users/Ad/django-projects/archive/ processes=2 threads=4 maximum-requests=100 display-name=apache-dw-wsgi
+	WSGIProcessGroup dw-site
+	Alias "/static_admin/" "/usr/share/pyshared/django/contrib/admin/media/"
+	<Location "/static_admin/">
+			SetHandler None
+	</Location>
+
+
+</VirtualHost>
